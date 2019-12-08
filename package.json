@@ -27,8 +27,11 @@
   "devDependencies": {
     "@types/node": "^12.6.9",
     "@types/tween.js": "^17.2.0",
+    "abs-svg-path": "^0.1.1",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.8",
+    "normalize-svg-path": "^1.0.1",
+    "parse-svg-path": "^0.1.2",
     "postcss-loader": "^3.0.0",
     "terser-webpack-plugin": "^1.2.2",
     "to-string-loader": "^1.1.6",
@@ -41,6 +44,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "animation-frame-delta": "^1.0.0"
+    "@tweenjs/tween.js": "^18.4.2",
+    "animation-frame-delta": "^2.1.0"
   }
 }
