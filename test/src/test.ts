@@ -1,4 +1,4 @@
-import tweenSvgPath from "../../app/src/tweenSvgPath"
+import tweenSvgPath, { tweenPreparedSvgPaths } from "../../app/src/tweenSvgPath"
 import animationFrameDelta from "animation-frame-delta"
 import TWEEN from "@tweenjs/tween.js"
 const testElem: SVGPathElement = document.querySelector("#path")
@@ -16,45 +16,21 @@ let segments2 = normalize(abs(parse(input2)));
 //tweenSvgPath(segments1)
 
 
-let myGroup
-
-
-setTimeout(() => {
-  testElem.getAttribute("d");
-  
-}, 1000);
+let w = tweenPreparedSvgPaths(segments1, segments2, 1000)
 
 
 animationFrameDelta(() => {
-  TWEEN.update()
+  let e = w.update()
 
-  //console.log(segments1);
-  
-  let joined = ""
-  
+  let s = ""
+  for (let i = 0; i < e.length; i++) {
+    const elem = e[i];
+    s += elem.join(" ") + " "
+  }
 
-  segments1.forEach((e) => {
-    joined += e.join(" ") + " "
-  })
-  console.log(joined);
-  
-  testElem.setAttribute("d", joined)
+  testElem.setAttribute("d", s);
   
   
 }, 1000)
 
 
-for (let i = 0; i < segments1.length; i++) {
-  let start = segments1[i];
-  let prep = start[0]
-  
-  let end = segments2[i];
-  const tween = new TWEEN.Tween(start)
-    .to(end, 1000)
-    .easing(TWEEN.Easing.Quadratic.Out)
-    .onUpdate((e) => {
-
-      start[0] = prep
-    })
-    .start();
-}
