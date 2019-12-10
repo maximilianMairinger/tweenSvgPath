@@ -60,8 +60,8 @@ function setupTweenPreparedSvgPaths<TweenWrapper extends typeof ControlableSegme
     
     let prep = start[0]
     tweens.add(new TWEEN.Tween(start, tweenGroup)
-      .to(to[i], duration)
-      .easing(easing)
+      .to(to[i], 100)
+      .easing(Easing.Linear.None)
       .onUpdate((e) => {
         e[0] = prep
       })
@@ -69,7 +69,7 @@ function setupTweenPreparedSvgPaths<TweenWrapper extends typeof ControlableSegme
   }
   
   //@ts-ignore
-  return new TweenWrapper(tweenGroup, from, tweens)
+  return new TweenWrapper(tweenGroup, from, tweens, easing)
 }
 
 
@@ -81,7 +81,8 @@ interface ReadableTween<UpdateFunc extends AnyUpdateFunc> {
 abstract class ControlableTween<UpdateFunc extends AnyUpdateFunc> implements ReadableTween<UpdateFunc> {
   private updateLs: UpdateFunc[] = []
   private startTime: number
-  constructor(protected group: TWEEN.Group, protected segments: Segments, protected tweensStart: TWEEN.Tween[]) {
+  
+  constructor(protected group: TWEEN.Group, protected segments: Segments, protected tweensStart: TWEEN.Tween[], private easing: (at: number) => number) {
     
   }
 
@@ -97,8 +98,11 @@ abstract class ControlableTween<UpdateFunc extends AnyUpdateFunc> implements Rea
   }
 
   private generalUpdateWithoutStart(at?: number) {
-    if (at !== undefined) this.group.update(at + this.startTime)
-    else this.group.update()
+    if (at === undefined) at = performance.now()
+    debugger
+    console.log(tweenProgressToSaveProgress(this.easing(at + this.startTime)));
+    
+    this.group.update(tweenProgressToSaveProgress(this.easing(at + this.startTime)))
   }
 
   protected notifyObservers(segementsOrString: UpdateFunc extends SegmentUpdateFunc ? Segments : string) {
@@ -128,8 +132,8 @@ type ReadAbleTweenSegmentTween = ReadableTween<SegmentUpdateFunc>
 type ReadAbleTweenStringTween = ReadableTween<StringUpdateFunc>
 
 class ControlableSegmentTween extends ControlableTween<SegmentUpdateFunc> {
-  constructor(group: TWEEN.Group, segments: Segments, tweensStart: TWEEN.Tween[]) {
-    super(group, segments, tweensStart)
+  constructor(group: TWEEN.Group, segments: Segments, tweensStart: TWEEN.Tween[], easing: (at: number) => number) {
+    super(group, segments, tweensStart, easing)
   }
   public update(at?: number) {
     this.generalUpdate(at)
@@ -138,8 +142,8 @@ class ControlableSegmentTween extends ControlableTween<SegmentUpdateFunc> {
 }
 
 class ControlableStringTween extends ControlableTween<StringUpdateFunc> {
-  constructor(group: TWEEN.Group, segments: Segments, tweensStart: TWEEN.Tween[]) {
-    super(group, segments, tweensStart)
+  constructor(group: TWEEN.Group, segments: Segments, tweensStart: TWEEN.Tween[], easing: (at: number) => number) {
+    super(group, segments, tweensStart, easing)
   }
   public update(at?: number) {
     this.generalUpdate(at)
@@ -152,5 +156,15 @@ class ControlableStringTween extends ControlableTween<StringUpdateFunc> {
     s = s.substr(0, s.length-1)
     
     return this.notifyObservers(s)
+  }
+}
+
+let tweenProgressToSaveProgress = progressToSaveProgress(0, 99.99999)
+
+function progressToSaveProgress(min: number, max: number) {
+  return function progressToSaveProgress(val: number) {
+    if (val < min) return min
+    else if (val > max) return max
+    return val
   }
 }
