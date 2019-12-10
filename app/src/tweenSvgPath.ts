@@ -12,8 +12,8 @@ export const { Easing } = TWEEN
 
 type Segments = (string | number)[][]
 
-export default function (from: string | SVGPathElement, to: string, duration: number, easing?: (at: number) => number, run?: true): ReadAbleTweenSegmentTween
-export default function (from: string | SVGPathElement, to: string, duration: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: string | SVGPathElement, to: string, duration: number, easing?: (at: number) => number, run?: true): ReadAbleTweenStringTween
+export default function (from: string | SVGPathElement, to: string, duration: number, easing?: (at: number) => number, run?: false): ControlableStringTween
 export default function (from: string | SVGPathElement, to: string, duration: number, easing?: (at: number) => number, run: boolean = true) {
   let elem: SVGPathElement
   if (from instanceof SVGPathElement) {
@@ -28,7 +28,6 @@ export default function (from: string | SVGPathElement, to: string, duration: nu
 
 
   if (run) animationFrameDelta(() => {
-    
     controlableStringTween.update()
   }, duration)
 
