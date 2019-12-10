@@ -13,5 +13,5 @@ let input2 = "M 218.172 299.236 C 218.172 299.236 396.895 0 396.895 0 C 396.895 
 
 //tweenSvgPath(segments1)
 
-
+debugger
 let w = tweenSvgPath(testElem, input2, 1000)
