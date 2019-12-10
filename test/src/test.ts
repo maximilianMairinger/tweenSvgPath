@@ -29,7 +29,9 @@ window.addEventListener("scroll", (e) => {
 })
 
 scrollData.subscribe((e) => {
-  if (e >= 2000) e = 2200
+  // if (e === 0) debugger
+  if (e > 2000) e = 1999.999999
+  console.log(e)
   w.update(e)
 })
 

@@ -80,20 +80,25 @@ interface ReadableTween<UpdateFunc extends AnyUpdateFunc> {
 
 abstract class ControlableTween<UpdateFunc extends AnyUpdateFunc> implements ReadableTween<UpdateFunc> {
   private updateLs: UpdateFunc[] = []
+  private startTime: number
   constructor(protected group: TWEEN.Group, protected segments: Segments, protected tweensStart: TWEEN.Tween[]) {
     
   }
 
   protected generalUpdate(at?: number) {
+    this.startTime = performance.now()
+    
     this.tweensStart.ea((tween) => {
-      tween.start()
+      tween.start(this.startTime)
     })
-    this.group.update(at)
+    
+    this.generalUpdateWithoutStart(at)
     this.generalUpdate = this.generalUpdateWithoutStart
   }
 
   private generalUpdateWithoutStart(at?: number) {
-    this.group.update(at)
+    if (at !== undefined) this.group.update(at + this.startTime)
+    else this.group.update()
   }
 
   protected notifyObservers(segementsOrString: UpdateFunc extends SegmentUpdateFunc ? Segments : string) {
