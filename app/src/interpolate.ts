@@ -38,134 +38,91 @@ class InterpolationCheckError extends InterpolateError {
 
 
 class SimpleTween {
-  private updateLs: ((res: number) => void)[] = []
-  private startTimestamp: number;
-
-  private _duration: number
-  private _easing:  (at: number) => number
-
-  public static linearEasing = a => a
-  
-  constructor(public from: number, public to: number, duration?: number, easing: (at: number) => number = SimpleTween.linearEasing) {
-    this._duration = duration
-    this.easing = easing
-    this.assignUpdateFunc()
+  constructor(public from: number, public to: number, public onUpdate: (res: number) => void) {
+    
   }
-
-  public update(at?: number) {
-    if (at === undefined) {
-      if (this.startTimestamp === undefined) this.startTimestamp = now()
-      at = now() - this.startTimestamp
-    }
-    return this.updateAt(at)
+  public update(at: number) {
+    this.onUpdate(this.from + (this.to - this.from) * at)
   }
-
-  public updateAt(at: number) {
-    if (at < 0) at = 0
-    if (at > this.duration) at = this.duration
-    let erg = this.from + (this.to - this.from) * this.parseAt(at)
-    this.updateLs.forEach((f) => {
-      f(erg)
-    })
-    return erg
-  }
-
-  private pa_easing_duration(at: number) {
-    return this._easing(at / this._duration)
-  }
-
-  private pa_duration(at: number) {
-    return at / this._duration
-  }
-
-  private pa_easing(at: number) {
-    return this._easing(at)
-  }
-
-  private pa_none(at: number) {
-    return 1
-  }
-
-
-
-  public onUpdate(func: (res: number) => void) {
-    this.updateLs.add(func)
-    return func
-  }
-  public offUpdate(func: (res: number) => void) {
-    this.updateLs.rmV(func)
-  }
-
-  public set duration(to: number) {
-    this._duration = to
-  }
-  public get duration(): number {
-    return this._duration
-  }
-
-  public set easing(to: (at: number) => number) {
-    this._easing = to
-  }
-  public get easing(): (at: number) => number {
-    return this._easing
-  }
-
-  private parseAt: (at: number) => number
-
-  private assignUpdateFunc() {
-    let hasDuration = this._duration !== undefined && this._duration !== 1
-    let hasEasing = this.easing !== undefined && this._easing !== SimpleTween.linearEasing
-    if (!hasDuration && !hasEasing) {
-      this.parseAt = this.pa_none
-    }
-    else if (hasDuration && !hasEasing) {
-      this.parseAt = this.pa_duration
-    }
-    else if (!hasDuration && hasEasing) {
-      this.parseAt = this.pa_easing
-    }
-    else {
-      this.parseAt = this.pa_easing_duration
-    }
-  }
-
 }
 
 type GenericObject = {[prop: string]: any}
-const objectString = "object"
 
-class Tween<Of> {
-  private _from: Of;
-  private _to: Of;
-  private tweeny: any;
-  private tweenInstances: SimpleTween[] 
-  constructor(from: Of, to: Of, public duration: number = 1, public easing: (at: number) => number = a => a) {
-    this._from = from
-    this._to = to
+
+export abstract class Interpolate<Face, Interior extends GenericObject = GenericObject> {
+  private _from: Interior;
+  private _to: Interior;
+  private tweeny: Interior;
+  private tweenInstances: SimpleTween[] = []
+
+  private updateListeners: ((res: Readonly<Face>) => void)[] = []
+
+  private startTime: number
+  constructor(from: Face, to: Face, public duration: number = 1, public easing: (at: number) => number = a => a) {
+    this._from = this.parseIn(from)
+    this._to = this.parseIn(to)
     this.prepInput()
-  } 
+  }
+
+  protected updateWithoutNotification(at?: number) {
+    if (at === undefined) {
+      if (this.startTime === undefined) {
+        at = 0
+        this.startTime = now()
+      }
+      else {
+        at = now() - this.startTime
+      }
+    }
+
+    if (at > this.duration) at = this.duration
+    else if (at < 0) at = 0
+    at = at / this.duration
+    at = this.easing(at)
+
+    this.tweenInstances.ea((tween) => {
+      tween.update(at)
+    })
+  }
+
+  protected abstract parseOut(interior: Interior): Face
+  protected abstract parseIn(face: Face): Interior
+
+  public update(at?: number): Readonly<Face> {
+    this.updateWithoutNotification(at)
+    let res = this.parseOut(this.tweeny)
+    this.updateListeners.ea((f) => {
+      f(res)
+    })
+    return res
+  }
+
   
 
-  public update() {
-    // TODO: 
-    // calc easing and duration then fill this to all tweenies (updateAt) also dont check for (is > than may and < min on each insatcne)
-    // We dont have to export SimpleTween at all. think about makeing it super performant without checks or even move to class Tween
+  public onUpdate(ls: (res: Readonly<Face>) => void) {
+    this.updateListeners.add(ls)
+    return ls
   }
 
-  public set from(to: Of) {
-    this._from = to
-    this.prepInput()
-  }
-  public get from(): Of {
-    return this._from
+  public offUpdate(ls: (res: Readonly<Face>) => void) {
+    this.updateListeners.rmV(ls)
   }
 
-  public set to(to: Of) {
-    this._to = to
+
+  public set from(to: Face) {
+    this._from = this.parseIn(to)
     this.prepInput()
   }
-  public get to(): Of {
-    return this._to
+  public get from(): Face {
+    return this.parseOut(this._from)
+  }
+
+  public set to(to: Face) {
+    this._to = this.parseIn(to)
+    this.prepInput()
+  }
+  public get to(): Face {
+    return this.parseOut(this._to)
   }
 
   private prepInput() {
@@ -173,7 +130,12 @@ class Tween<Of> {
 
 
     this.tweeny = clone(this._from)
-    if (typeof this.tweeny === "object") this.prepTweeny(this.tweeny, this._to)
+    let typeofTweeny = typeof this.tweeny
+    if (typeofTweeny === "object") this.prepTweeny(this.tweeny, this._to)
+    //@ts-ignore
+    else if (typeofTweeny === "number") this.tweenInstances.add(new SimpleTween(this._from, this._to, (e) => {
+      this.tweeny = e
+    }))
   }
 
   private prepTweeny(tweeny: any, _to: any) {
@@ -183,19 +145,14 @@ class Tween<Of> {
       let to = _to[key]
       typeofFrom = typeof from
       if (typeofFrom === "number") {
-        let t = new SimpleTween(from, to)
-        t.onUpdate((e) => {
+        this.tweenInstances.add(new SimpleTween(from, to, (e) => {
           tweeny[key] = e
-        })
-        this.tweenInstances.add(t)
+        }))
       }
       else if (typeofFrom === "object") {
-        this.prepTweeny(from, to[key])
+        this.prepTweeny(from, to)
       }
     }
-    
-      
-    
   }
 
   private checkInput(from: any, to: any) {
@@ -224,22 +181,17 @@ class Tween<Of> {
   }
 }
 
-let c = new Tween({
-  a: 123,
-  b: {
-    bb: 321,
-    bb2: "wos"
-  }
-}, {
-  a: 200,
-  b: {
-    bb: 434,
-    bb2: "wo"
-  }
-}, 2000, a => a);
+export default class InterpolateObject extends Interpolate<GenericObject, GenericObject> {
 
-// animationFrameDelta(() => {
-//   console.log(c.update());
+  protected parseOut(interior: GenericObject): GenericObject {
+    return interior  
+  }
   
-// }, 2000)
+  protected parseIn(face: GenericObject): GenericObject {
+    return face
+  }
+}
+
+
+
 
