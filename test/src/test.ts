@@ -18,7 +18,7 @@ let easeInOut = bez(.42, 0, .58, 1)
 let from: any[] = normalize((parse(input1)))
 let to: any[] = normalize(abs(parse(input1)))
 
-let w = tweenSvgPath(input1, input2, 2000, easeInOut, false)
+let w = tweenSvgPath(elem, input2, 1500, easeInOut)
 
 
 let scrollData = new Data(0)
@@ -27,15 +27,12 @@ window.addEventListener("scroll", (e) => {
   scrollData.val = window.scrollY
 })
 
-scrollData.subscribe((e) => {
-  // if (e === 0) debugger
-  
-  //console.log(e)
-  w.update(e)
-})
+// scrollData.subscribe((e) => {
+//   w.update(e)
+// })
 
-w.onUpdate((path) => {
-  elem.setAttribute("d", path)
-})
+// w.onUpdate((path) => {
+//   elem.setAttribute("d", path)
+// })
 
 
