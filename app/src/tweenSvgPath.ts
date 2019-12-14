@@ -27,11 +27,11 @@ class ControlableStringTween extends Tween<string, Segments> {
 
 type Segments = (string | number)[][]
 
-export default function (from: Segments,                to: Segments, duration: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (from: Segments,                to: Segments, duration: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: string | SVGPathElement, to: string,   duration: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
-export default function (from: string | SVGPathElement, to: string,   duration: number, easing?: (at: number) => number, run?: false): ControlableStringTween
-export default function (from: string | SVGPathElement | Segments, to: string | Segments, duration: number, easing?: (at: number) => number, run: boolean = true) {
+export default function (from: Segments,                to: Segments, duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (from: Segments,                to: Segments, duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: string | SVGPathElement, to: string,   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
+export default function (from: string | SVGPathElement, to: string,   duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
+export default function (from: string | SVGPathElement | Segments, to: string | Segments, duration?: number, easing?: (at: number) => number, run: boolean = true) {
   let elem: SVGPathElement
   if (from instanceof SVGPathElement) {
     elem = from
