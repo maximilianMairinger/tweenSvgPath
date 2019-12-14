@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/maximilianMairinger/tweenSvgPath#readme",
   "devDependencies": {
-    "@types/node": "^12.6.9",
+    "@types/node": "^12.12.17",
     "@types/tween.js": "^17.2.0",
     "abs-svg-path": "^0.1.1",
     "bezier-easing": "^2.1.0",
@@ -35,7 +35,7 @@
     "normalize-svg-path": "^1.0.1",
     "parse-svg-path": "^0.1.2",
     "postcss-loader": "^3.0.0",
-    "terser-webpack-plugin": "^1.2.2",
+    "terser-webpack-plugin": "^1.4.3",
     "to-string-loader": "^1.1.6",
     "ts-loader": "^5.3.3",
     "typescript": "^3.5.2",
@@ -46,8 +46,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@tweenjs/tween.js": "18.4.2",
-    "animation-frame-delta": "^2.1.5",
+    "animation-frame-delta": "^2.2.1",
     "xrray": "^4.0.4"
   }
 }
