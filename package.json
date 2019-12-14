@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "animation-frame-delta": "^2.2.1",
+    "tween-object": "^1.0.0",
     "xrray": "^4.0.4"
   }
 }

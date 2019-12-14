@@ -3,10 +3,10 @@ const parse = require('parse-svg-path');
 const abs = require('abs-svg-path');
 const normalize = require('normalize-svg-path');
 require("xrray")(Array)
-import ControlableSegmentTween, { Interpolate } from "./interpolate"
+import ControlableSegmentTween, { Tween } from "tween-object"
 
 
-class ControlableStringTween extends Interpolate<string, Segments> {
+class ControlableStringTween extends Tween<string, Segments> {
   protected parseIn(face: string): Segments {
     return normalize(abs(parse(face)))
   }
@@ -14,8 +14,7 @@ class ControlableStringTween extends Interpolate<string, Segments> {
   protected parseOut(interior: Segments) {
     let i = 0
     let s = ""
-    let length = interior.length
-    for (; i < length; i++) {
+    for (; i < interior.length; i++) {
       s += interior[i].join(" ") + " "
     }
     s = s.substr(0, s.length-1)
