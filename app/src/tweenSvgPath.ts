@@ -38,7 +38,7 @@ export default function (from: string | SVGPathElement | Segments, to: string | 
     from = elem.getAttribute("d")
   }
   
-  let InterpolatorClass = typeof from === "string" ? ControlableStringTween : ControlableStringTween
+  let InterpolatorClass = typeof from === "string" ? ControlableStringTween : ControlableSegmentTween
   //@ts-ignore
   let interpolator = new InterpolatorClass(from, to, duration, easing)
   

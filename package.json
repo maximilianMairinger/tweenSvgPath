@@ -1,6 +1,6 @@
 {
   "name": "tween-svg-path",
-  "version": "1.0.1" ,
+  "version": "1.0.1",
   "description": "High performance & lightweight tween interpolation for svg paths",
   "main": "app/dist/tweenSvgPath.js",
   "types": "app/dist/tweenSvgPath.d.ts",
@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "animation-frame-delta": "^2.2.1",
+    "path-data": "0.0.2",
     "tween-object": "^1.0.0",
-    "xrray": "^4.0.4"
+    "xrray": "^4.0.6"
   }
 }
