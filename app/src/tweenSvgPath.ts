@@ -6,6 +6,8 @@ require("xrray")(Array)
 import ControlableSegmentTween, { Tween } from "tween-object"
 
 
+//TODO: Multiple
+
 class ControlableStringTween extends Tween<string, Segments> {
   protected parseIn(face: string): Segments {
     return normalize(abs(parse(face)))
