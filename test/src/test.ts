@@ -4,7 +4,6 @@ import { Data } from "front-db"
 import bez from "bezier-easing"
 const elem: SVGPathElement = document.querySelector("#path")
 const app: HTMLElement = document.querySelector("#main")
-import * as normal from "path-data"
 
 
 
