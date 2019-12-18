@@ -3,8 +3,12 @@ const parse = require('parse-svg-path');
 const abs = require('abs-svg-path');
 const normalize = require('normalize-svg-path');
 require("xrray")(Array)
-import ControlableSegmentTween, { Tween } from "tween-object"
+import TweenObject, { Tween } from "tween-object"
 
+
+type Segments = (string | number)[][]
+type Keyframes<Of> = {value: Of, offset?: number}[]
+type ControlableSegmentTween = TweenObject<Segments, Segments>
 
 class ControlableStringTween extends Tween<string, Segments> {
   protected parseIn(face: string): Segments {
@@ -30,12 +34,11 @@ class ControlableStringTween extends Tween<string, Segments> {
 
 
 
-type Segments = (string | number)[][]
-type Keyframes<Of> = {value: Of, offset?: number}[]
 
 
-export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+
+export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
+export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
 export default function (array: true,                   keyframes: Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
 export default function (array: true,                   keyframes: Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
 export default function (from: Segments,                to: Segments,                   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
@@ -49,7 +52,7 @@ export default function (from_array: string | SVGPathElement | Segments | true, 
     from_array = elem.getAttribute("d")
   }
 
-  let InterpolatorClass: typeof ControlableStringTween | typeof ControlableSegmentTween = from_array === true ? typeof (to_keyframes as Keyframes<string> | Keyframes<Segments>).first.value === "string" ? ControlableStringTween : ControlableSegmentTween : typeof from_array === "string" ? ControlableStringTween : ControlableSegmentTween
+  let InterpolatorClass: typeof ControlableStringTween | typeof TweenObject = from_array === true ? typeof (to_keyframes as Keyframes<string> | Keyframes<Segments>).first.value === "string" ? ControlableStringTween : ControlableSegmentTween : typeof from_array === "string" ? ControlableStringTween : ControlableSegmentTween
   //@ts-ignore
   let interpolator = new InterpolatorClass(from_array, to_keyframes, duration, easing)
 
