@@ -29,22 +29,25 @@ class ControlableStringTween extends Tween<string, Segments> {
 
 type Segments = (string | number)[][]
 
-export default function (from: Segments,                to: Segments, duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (from: Segments,                to: Segments, duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: string | SVGPathElement, to: string,   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
-export default function (from: string | SVGPathElement, to: string,   duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
-export default function (from: string | SVGPathElement | Segments, to: string | Segments, duration?: number, easing?: (at: number) => number, run: boolean = true) {
+
+export default function (array: true,                   keyframes: string[],   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (array: true,                   keyframes: string[],   duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (array: true,                   keyframes: Segments[], duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (array: true,                   keyframes: Segments[], duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: Segments,                to: Segments,          duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (from: Segments,                to: Segments,          duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: string | SVGPathElement, to: string,            duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
+export default function (from: string | SVGPathElement, to: string,            duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
+export default function (from_array: string | SVGPathElement | Segments | true, to_keyframes: string | Segments | string[] | Segments[], duration?: number, easing?: (at: number) => number, run: boolean = true) {
   let elem: SVGPathElement
-  if (from instanceof SVGPathElement) {
-    elem = from
-    from = elem.getAttribute("d")
+  if (from_array instanceof SVGPathElement) {
+    elem = from_array
+    from_array = elem.getAttribute("d")
   }
-  
-  let InterpolatorClass = typeof from === "string" ? ControlableStringTween : ControlableSegmentTween
+
+  let InterpolatorClass: typeof ControlableStringTween | typeof ControlableSegmentTween = from_array === true ? typeof (to_keyframes as (Segments | string)[]).first === "string" ? ControlableStringTween : ControlableSegmentTween : typeof from_array === "string" ? ControlableStringTween : ControlableSegmentTween
   //@ts-ignore
-  let interpolator = new InterpolatorClass(from, to, duration, easing)
-  
-  
+  let interpolator = new InterpolatorClass(from_array, to_keyframes, duration, easing)
 
 
   if (run) animationFrameDelta(() => {
