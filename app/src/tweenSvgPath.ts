@@ -6,11 +6,14 @@ require("xrray")(Array)
 import ControlableSegmentTween, { Tween } from "tween-object"
 
 
-// try catch around ControlableStringTween parsing
-
 class ControlableStringTween extends Tween<string, Segments> {
   protected parseIn(face: string): Segments {
-    return normalize(abs(parse(face)))
+    try {
+      return normalize(abs(parse(face)))
+    }
+    catch(e) {
+      throw new Error("Failed to parseIn svgPathString.")
+    }
   }
 
   protected parseOut(interior: Segments) {
