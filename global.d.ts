@@ -1,4 +1,4 @@
-interface Array<T> {
+interface Array<T> extends Xrray.innerExtention<T> {
 	/**
 	 * True if empty
 	 */
@@ -6,11 +6,11 @@ interface Array<T> {
 	/**
 	 * Last element
 	 */
-	readonly last: T;
+	last: T;
 	/**
 	 * First element
 	 */
-	readonly first: T;
+	first: T;
 	/**
 	 * length without empty slots
 	 */
@@ -238,7 +238,24 @@ interface Array<T> {
 	 * Finds the closest element of an numeric array to given to
 	 */
 	nearest: T extends number ? (to: number) => number : typeof undefined
+	
+
 }
+
+declare namespace Xrray {
+	export interface innerExtention<T>{
+		/*
+		 * Steps into step of all entries
+		 */
+		inner<Key extends keyof T, Val = T[Key]>(step: Key): Val[]
+		/*
+		 * Steps into step of all entries
+		 */
+		Inner<Key extends keyof T, Val = T[Key]>(step: Key): Val[]
+	}
+}
+
+
 
 interface IndexOutOfBoundsException extends Exception {
 	index: number;
