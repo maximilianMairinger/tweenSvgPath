@@ -46,6 +46,15 @@ export default function (from: Segments,                to: Segments,           
 export default function (from: string | SVGPathElement, to: string,                     duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
 export default function (from: string | SVGPathElement, to: string,                     duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
 export default function (from_array: string | SVGPathElement | Segments | true, to_keyframes: string | Segments | Keyframes<string> | Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run: boolean = true) {
+  // defaults
+
+  if (duration === undefined) {
+    if (run) duration = 1000
+    else duration = 1
+  }
+
+
+
   let elem: SVGPathElement
   if (from_array instanceof SVGPathElement) {
     elem = from_array
