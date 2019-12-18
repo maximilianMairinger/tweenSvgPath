@@ -47,7 +47,7 @@
     "animation-frame-delta": "^2.2.3",
     "normalize-svg-path": "^1.0.1",
     "parse-svg-path": "^0.1.2",
-    "tween-object": "^1.1.4",
+    "tween-object": "^1.1.5",
     "xrray": "^4.2.1"
   }
 }

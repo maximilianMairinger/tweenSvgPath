@@ -52,7 +52,7 @@ export default function (from_array: string | SVGPathElement | Segments | true, 
     from_array = elem.getAttribute("d")
   }
 
-  let InterpolatorClass: typeof ControlableStringTween | typeof TweenObject = from_array === true ? typeof (to_keyframes as Keyframes<string> | Keyframes<Segments>).first.value === "string" ? ControlableStringTween : ControlableSegmentTween : typeof from_array === "string" ? ControlableStringTween : ControlableSegmentTween
+  let InterpolatorClass: typeof ControlableStringTween | typeof TweenObject = from_array === true ? typeof (to_keyframes as Keyframes<string> | Keyframes<Segments>).first.value === "string" ? ControlableStringTween : TweenObject : typeof from_array === "string" ? ControlableStringTween : ControlableSegmentTween
   //@ts-ignore
   let interpolator = new InterpolatorClass(from_array, to_keyframes, duration, easing)
 
