@@ -6,7 +6,7 @@ require("xrray")(Array)
 import ControlableSegmentTween, { Tween } from "tween-object"
 
 
-//TODO: Multiple
+// try catch around ControlableStringTween parsing
 
 class ControlableStringTween extends Tween<string, Segments> {
   protected parseIn(face: string): Segments {
@@ -28,24 +28,25 @@ class ControlableStringTween extends Tween<string, Segments> {
 
 
 type Segments = (string | number)[][]
+type Keyframes<Of> = {value: Of, offset?: number}[]
 
 
-export default function (array: true,                   keyframes: string[],   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (array: true,                   keyframes: string[],   duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (array: true,                   keyframes: Segments[], duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (array: true,                   keyframes: Segments[], duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: Segments,                to: Segments,          duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (from: Segments,                to: Segments,          duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: string | SVGPathElement, to: string,            duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
-export default function (from: string | SVGPathElement, to: string,            duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
-export default function (from_array: string | SVGPathElement | Segments | true, to_keyframes: string | Segments | string[] | Segments[], duration?: number, easing?: (at: number) => number, run: boolean = true) {
+export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (array: true,                   keyframes: Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (array: true,                   keyframes: Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: Segments,                to: Segments,                   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (from: Segments,                to: Segments,                   duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: string | SVGPathElement, to: string,                     duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
+export default function (from: string | SVGPathElement, to: string,                     duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
+export default function (from_array: string | SVGPathElement | Segments | true, to_keyframes: string | Segments | Keyframes<string> | Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run: boolean = true) {
   let elem: SVGPathElement
   if (from_array instanceof SVGPathElement) {
     elem = from_array
     from_array = elem.getAttribute("d")
   }
 
-  let InterpolatorClass: typeof ControlableStringTween | typeof ControlableSegmentTween = from_array === true ? typeof (to_keyframes as (Segments | string)[]).first === "string" ? ControlableStringTween : ControlableSegmentTween : typeof from_array === "string" ? ControlableStringTween : ControlableSegmentTween
+  let InterpolatorClass: typeof ControlableStringTween | typeof ControlableSegmentTween = from_array === true ? typeof (to_keyframes as Keyframes<string> | Keyframes<Segments>).first.value === "string" ? ControlableStringTween : ControlableSegmentTween : typeof from_array === "string" ? ControlableStringTween : ControlableSegmentTween
   //@ts-ignore
   let interpolator = new InterpolatorClass(from_array, to_keyframes, duration, easing)
 
