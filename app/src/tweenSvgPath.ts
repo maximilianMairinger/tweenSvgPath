@@ -1,33 +1,19 @@
 import animationFrameDelta from "animation-frame-delta"
-const parse = require('parse-svg-path');
-const abs = require('abs-svg-path');
-const normalize = require('normalize-svg-path');
 require("xrray")(Array)
 import TweenObject, { Tween } from "tween-object"
+import * as parse from "./parse"
 
 
-type Segments = (string | number)[][]
+type Segments = parse.Segments
 type Keyframes<Of> = {value: Of, offset?: number}[]
 type ControlableSegmentTween = TweenObject<Segments, Segments>
 
 class ControlableStringTween extends Tween<string, Segments> {
   protected parseIn(face: string): Segments {
-    try {
-      return normalize(abs(parse(face)))
-    }
-    catch(e) {
-      throw new Error("Failed to parseIn svgPathString.")
-    }
+    return parse.toObject(face)
   }
-
   protected parseOut(interior: Segments) {
-    let i = 0
-    let s = ""
-    for (; i < interior.length; i++) {
-      s += interior[i].join(" ") + " "
-    }
-    s = s.substr(0, s.length-1)
-    return s
+    return parse.toPath(interior)
   }
 }
 
