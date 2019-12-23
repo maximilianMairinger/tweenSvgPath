@@ -1,10 +1,12 @@
 import animationFrameDelta from "animation-frame-delta"
 require("xrray")(Array)
 import TweenObject, { Tween, Options } from "tween-object"
-import * as parse from "./parse"
+import * as par from "./parse"
+
+export let parse = par
 
 
-type Segments = parse.Segments
+type Segments = par.Segments
 type Keyframes<Of> = {value: Of, offset?: number}[]
 type ControlableSegmentTween = TweenObject<Segments, Segments>
 
