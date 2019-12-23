@@ -22,37 +22,35 @@ let parsed1: Segments = normalize(abs(parse(input1)))
 let parsed2: Segments = normalize(abs(parse(input2)))
 let parsed3: Segments = normalize(abs(parse(input3)))
 
-console.log("as")
 
 let easeInOut = bez(.42, 0, .58, 1)
 
 let w = tweenSvgPath(true, [
-  {value: parsed1},
-  {value: parsed2},
-  {value: parsed3}
-], 1500, easeInOut, false)
-
+  {value: input1},
+  {value: input2},
+  {value: input3},
+  {value: input1}
+], {
+  start: 500,
+  end: 3000,
+  easing: easeInOut,
+  iterations: 3,
+  fill: true
+}, true)
 
 
 let scrollData = new Data(0)
 
-scrollData.subscribe(w.update.bind(w))
+// scrollData.subscribe(w.update.bind(w))
 
 window.addEventListener("scroll", (e) => {
   scrollData.val = window.scrollY
 })
 
 
-w.onUpdate((pathSegements) => {
+w.onUpdate((path) => {
 
-  let i = 0
-  let s = ""
-  for (; i < pathSegements.length; i++) {
-    s += pathSegements[i].join(" ") + " "
-  }
-  s = s.substr(0, s.length-1)
-
-  elem.setAttribute("d", s)
+  elem.setAttribute("d", path)
 })
 
 
