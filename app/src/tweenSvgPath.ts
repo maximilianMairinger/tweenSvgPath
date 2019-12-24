@@ -7,36 +7,37 @@ export let parse = par
 
 
 type Segments = par.Segments
-type Keyframes<Of> = {value: Of, offset?: number}[]
 type ControlableSegmentTween = TweenObject<Segments, Segments>
+type Seg = par.Seg
+type Str = par.Str
 
-class ControlableStringTween extends Tween<string, Segments> {
-  protected parseIn(face: string): Segments {
+class ControlableStringTween extends Tween<Str["Keyframe"], Seg["Keyframe"]> {
+  protected parseIn(face: Str["Keyframe"]): Seg["Keyframe"] {
     return parse.toObject(face)
   }
-  protected parseOut(interior: Segments) {
+  protected parseOut(interior: Seg["Keyframe"]): Str["Keyframe"] {
     return parse.toPath(interior)
   }
 }
 
 
-export default function (array: true,                   keyframes: Keyframes<string>,   options: Options, run?: true ): ReadAbleTweenStringTween
-export default function (array: true,                   keyframes: Keyframes<string>,   options: Options, run?: false): ControlableStringTween
-export default function (array: true,                   keyframes: Keyframes<Segments>, options: Options, run?: true ): ReadAbleTweenSegmentTween
-export default function (array: true,                   keyframes: Keyframes<Segments>, options: Options, run?: false): ControlableSegmentTween
-export default function (from: Segments,                to: Segments,                   options: Options, run?: true ): ReadAbleTweenSegmentTween
-export default function (from: Segments,                to: Segments,                   options: Options, run?: false): ControlableSegmentTween
-export default function (from: string | SVGPathElement, to: string,                     options: Options, run?: true ): ReadAbleTweenStringTween
-export default function (from: string | SVGPathElement, to: string,                     options: Options, run?: false): ControlableStringTween
-export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
-export default function (array: true,                   keyframes: Keyframes<string>,   duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
-export default function (array: true,                   keyframes: Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (array: true,                   keyframes: Keyframes<Segments>, duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: Segments,                to: Segments,                   duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (from: Segments,                to: Segments,                   duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: string | SVGPathElement, to: string,                     duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
-export default function (from: string | SVGPathElement, to: string,                     duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
-export default function (from_array: string | SVGPathElement | Segments | true, to_keyframes: string | Segments | Keyframes<string> | Keyframes<Segments>, duration_options?: number | Options, easing_run?: ((at: number) => number) | boolean, run?: boolean) {
+export default function (array: true,                         keyframes: Str["Keyframes"], options: Options, run?: true ): ReadAbleTweenStringTween
+export default function (array: true,                         keyframes: Str["Keyframes"], options: Options, run?: false): ControlableStringTween
+export default function (array: true,                         keyframes: Seg["Keyframes"], options: Options, run?: true ): ReadAbleTweenSegmentTween
+export default function (array: true,                         keyframes: Seg["Keyframes"], options: Options, run?: false): ControlableSegmentTween
+export default function (from: Seg["Frame"],                  to: Seg["Frame"],            options: Options, run?: true ): ReadAbleTweenSegmentTween
+export default function (from: Seg["Frame"],                  to: Seg["Frame"],            options: Options, run?: false): ControlableSegmentTween
+export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            options: Options, run?: true ): ReadAbleTweenStringTween
+export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            options: Options, run?: false): ControlableStringTween
+export default function (array: true,                         keyframes: Str["Keyframes"], duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
+export default function (array: true,                         keyframes: Str["Keyframes"], duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
+export default function (array: true,                         keyframes: Seg["Keyframes"], duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (array: true,                         keyframes: Seg["Keyframes"], duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: Seg["Frame"],                  to: Seg["Frame"],            duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
+export default function (from: Seg["Frame"],                  to: Seg["Frame"],            duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
+export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
+export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
+export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPathElement, to_keyframes: Str["Keyframes"] | Seg["Keyframes"] | Seg["Frame"] | Str["Frame"], duration_options?: number | Options, easing_run?: ((at: number) => number) | boolean, run?: boolean) {
   // defaults
 
   let duration: number
@@ -77,7 +78,7 @@ export default function (from_array: string | SVGPathElement | Segments | true, 
     from_array = elem.getAttribute("d")
   }
 
-  let InterpolatorClass: typeof ControlableStringTween | typeof TweenObject = from_array === true ? typeof (to_keyframes as Keyframes<string> | Keyframes<Segments>).first.value === "string" ? ControlableStringTween : TweenObject : typeof from_array === "string" ? ControlableStringTween : TweenObject
+  let InterpolatorClass: typeof ControlableStringTween | typeof TweenObject = from_array === true ? typeof (to_keyframes as Seg["Keyframes"] | Str["Keyframes"]).first === "string" ? ControlableStringTween : TweenObject : typeof from_array === "string" ? ControlableStringTween : TweenObject
   //@ts-ignore
   let interpolator: ControlableStringTween | TweenObject = new InterpolatorClass(from_array, to_keyframes, duration_options, easing_run)
 
