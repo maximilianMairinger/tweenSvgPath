@@ -42,12 +42,14 @@ export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPat
 
   let duration: number
 
-  if (typeof duration_options === "number") {
+  if (duration_options === undefined) {
     if (run === undefined) run = true
-    if (duration_options === undefined) {
-      if (run) duration_options = 1000
-      else duration_options = 1
-    }
+    if (run) duration_options = 1000
+    else duration_options = 1
+    duration = duration_options
+  }
+  else if (typeof duration_options === "number") {
+    if (run === undefined) run = true
     duration = duration_options
   }
   else {
