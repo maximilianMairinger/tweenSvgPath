@@ -30,11 +30,11 @@ export const toObject = function (path: Str["Keyframe"]): Seg["Keyframe"] {
   }
 }
 
-export const toPath = function (segmants: Seg["Keyframe"]): Str["Keyframe"] {
+export const toPath = function (segments: Seg["Keyframe"]): Str["Keyframe"] {
   let i = 0
   let s = ""
-  for (; i < segmants.length; i++) {
-    s += segmants[i].join(" ") + " " 
+  for (; i < segments.length; i++) {
+    s += segments[i].join(" ") + " " 
   }
   s = s.substr(0, s.length-1)
   return s
