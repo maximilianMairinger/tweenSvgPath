@@ -10,7 +10,7 @@ This takes an svg path element and interpolates it to the given path over the du
 import tweenSvgPath from "tweenSvgPath"
 
 let fromSvgElem = document.querySelector("#svg path")
-let toSvgPath   = "[your from svg path]"
+let toSvgPath   = "[your to svg path]"
 let duration    = 1000
 
 let tweeny = tweenSvgPath(fromSvgElem, toSvgPath, duration)
