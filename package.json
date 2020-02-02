@@ -39,7 +39,7 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
-    "webpack-inject-plugin": "^1.5.2",
+    "webpack-inject-plugin": "^1.5.4",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
@@ -47,7 +47,7 @@
     "animation-frame-delta": "^2.4.1",
     "normalize-svg-path": "^1.0.1",
     "parse-svg-path": "^0.1.2",
-    "tween-object": "^2.1.5",
-    "xrray": "^4.2.1"
+    "tween-object": "^2.3.2",
+    "xrray": "^4.6.3"
   }
 }
