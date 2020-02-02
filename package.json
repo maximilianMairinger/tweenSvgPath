@@ -30,7 +30,7 @@
     "bezier-easing": "^2.1.0",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.8",
-    "front-db": "^1.1.7",
+    "front-db": "^1.1.10",
     "postcss-loader": "^3.0.0",
     "terser-webpack-plugin": "^1.4.3",
     "to-string-loader": "^1.1.6",
@@ -47,7 +47,7 @@
     "animation-frame-delta": "^2.4.1",
     "normalize-svg-path": "^1.0.1",
     "parse-svg-path": "^0.1.2",
-    "tween-object": "^2.3.2",
-    "xrray": "^4.6.3"
+    "tween-object": "^2.3.3",
+    "xrray": "^4.6.4"
   }
 }
