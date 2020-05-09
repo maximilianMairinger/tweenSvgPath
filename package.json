@@ -1,6 +1,6 @@
 {
   "name": "tween-svg-path",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "description": "High performance & lightweight tween interpolation for svg paths",
   "main": "app/dist/tweenSvgPath.js",
   "types": "app/dist/tweenSvgPath.d.ts",
@@ -30,7 +30,7 @@
     "bezier-easing": "^2.1.0",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.8",
-    "front-db": "^1.1.7",
+    "front-db": "^1.1.10",
     "postcss-loader": "^3.0.0",
     "terser-webpack-plugin": "^1.4.3",
     "to-string-loader": "^1.1.6",
@@ -39,7 +39,7 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
-    "webpack-inject-plugin": "^1.5.2",
+    "webpack-inject-plugin": "^1.5.4",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
@@ -47,7 +47,7 @@
     "animation-frame-delta": "^2.4.1",
     "normalize-svg-path": "^1.0.1",
     "parse-svg-path": "^0.1.2",
-    "tween-object": "^2.1.5",
-    "xrray": "^4.2.1"
+    "tween-object": "^2.3.4",
+    "xrray": "^4.6.4"
   }
 }

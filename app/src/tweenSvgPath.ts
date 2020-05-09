@@ -1,6 +1,6 @@
 import animationFrameDelta from "animation-frame-delta"
-require("xrray")(Array)
 import TweenObject, { Tween, Options } from "tween-object"
+import Xrray from "xrray" // Just for types; Xrray gets inited in TweenObject
 import * as par from "./parse"
 
 export let parse = par
@@ -59,6 +59,7 @@ export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPat
       easing_run = undefined
     }
 
+    //@ts-ignore
     if (duration_options.end === undefined) {
       //@ts-ignore
       if (run) duration_options.end = duration_options.start + 1000
@@ -66,7 +67,7 @@ export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPat
       else duration_options.end = duration_options.start + 1
     }
 
-
+    //@ts-ignore
     duration = duration_options.end
   }
 
@@ -85,6 +86,7 @@ export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPat
   let interpolator: ControlableStringTween | TweenObject = new InterpolatorClass(from_array, to_keyframes, duration_options, easing_run)
 
 
+  //@ts-ignore
   if (run) animationFrameDelta(interpolator.update.bind(interpolator), duration, interpolator.options.iterations)
 
   if (elem !== undefined) interpolator.onUpdate((s) => {
