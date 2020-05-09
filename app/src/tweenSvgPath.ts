@@ -20,6 +20,10 @@ class ControlableStringTween extends Tween<Str["Keyframe"], Seg["Keyframe"]> {
   }
 }
 
+type EasingFunction = (at: number) => number
+type EasingOb = { function: EasingFunction }
+type Easing = EasingFunction | EasingOb
+
 
 export default function (array: true,                         keyframes: Str["Keyframes"], options: Options, run?: true ): ReadAbleTweenStringTween
 export default function (array: true,                         keyframes: Str["Keyframes"], options: Options, run?: false): ControlableStringTween
@@ -29,15 +33,15 @@ export default function (from: Seg["Frame"],                  to: Seg["Frame"], 
 export default function (from: Seg["Frame"],                  to: Seg["Frame"],            options: Options, run?: false): ControlableSegmentTween
 export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            options: Options, run?: true ): ReadAbleTweenStringTween
 export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            options: Options, run?: false): ControlableStringTween
-export default function (array: true,                         keyframes: Str["Keyframes"], duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
-export default function (array: true,                         keyframes: Str["Keyframes"], duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
-export default function (array: true,                         keyframes: Seg["Keyframes"], duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (array: true,                         keyframes: Seg["Keyframes"], duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: Seg["Frame"],                  to: Seg["Frame"],            duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenSegmentTween
-export default function (from: Seg["Frame"],                  to: Seg["Frame"],            duration?: number, easing?: (at: number) => number, run?: false): ControlableSegmentTween
-export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            duration?: number, easing?: (at: number) => number, run?: true ): ReadAbleTweenStringTween
-export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            duration?: number, easing?: (at: number) => number, run?: false): ControlableStringTween
-export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPathElement, to_keyframes: Str["Keyframes"] | Seg["Keyframes"] | Seg["Frame"] | Str["Frame"], duration_options?: number | Options, easing_run?: ((at: number) => number) | boolean, run?: boolean) {
+export default function (array: true,                         keyframes: Str["Keyframes"], duration?: number, easing?: Easing, run?: true ): ReadAbleTweenStringTween
+export default function (array: true,                         keyframes: Str["Keyframes"], duration?: number, easing?: Easing, run?: false): ControlableStringTween
+export default function (array: true,                         keyframes: Seg["Keyframes"], duration?: number, easing?: Easing, run?: true ): ReadAbleTweenSegmentTween
+export default function (array: true,                         keyframes: Seg["Keyframes"], duration?: number, easing?: Easing, run?: false): ControlableSegmentTween
+export default function (from: Seg["Frame"],                  to: Seg["Frame"],            duration?: number, easing?: Easing, run?: true ): ReadAbleTweenSegmentTween
+export default function (from: Seg["Frame"],                  to: Seg["Frame"],            duration?: number, easing?: Easing, run?: false): ControlableSegmentTween
+export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            duration?: number, easing?: Easing, run?: true ): ReadAbleTweenStringTween
+export default function (from: Str["Frame"] | SVGPathElement, to: Str["Frame"],            duration?: number, easing?: Easing, run?: false): ControlableStringTween
+export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPathElement, to_keyframes: Str["Keyframes"] | Seg["Keyframes"] | Seg["Frame"] | Str["Frame"], duration_options?: number | Options, easing_run?: Easing | boolean, run?: boolean) {
   // defaults
 
   let duration: number
@@ -90,6 +94,7 @@ export default function (from_array: true | Seg["Frame"] | Str["Frame"] | SVGPat
   if (run) animationFrameDelta(interpolator.update.bind(interpolator), duration, interpolator.options.iterations)
 
   if (elem !== undefined) interpolator.onUpdate((s) => {
+    //@ts-ignore
     elem.setAttribute("d", s)
   })
 
