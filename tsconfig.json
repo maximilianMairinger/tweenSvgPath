@@ -5,6 +5,7 @@
     "target": "esnext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   }
 }
