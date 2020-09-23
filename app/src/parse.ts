@@ -1,6 +1,6 @@
-const parse = require('parse-svg-path');
-const abs = require('abs-svg-path');
-const normalize = require('normalize-svg-path');
+import parse from "parse-svg-path"
+import abs from "abs-svg-path"
+import normalize from "normalize-svg-path"
 
 export type Segments = (string | number)[][]
 type Path = String
